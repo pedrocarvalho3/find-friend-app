@@ -1368,6 +1368,11 @@
     "@gluestack-ui/utils" "^0.1.14"
     "@react-native-aria/focus" "^0.2.9"
 
+"@gluestack-ui/spinner@^0.1.15":
+  version "0.1.15"
+  resolved "https://registry.npmjs.org/@gluestack-ui/spinner/-/spinner-0.1.15.tgz"
+  integrity sha512-jkXOGhna05HM2tcPKbA+t+vqcVRgRowwC6ES0A9kY5fcuURH1V41UFx/YWyHdSsHwmWlIoCCdWycF78UbNVdPg==
+
 "@gluestack-ui/toast@^1.0.9":
   version "1.0.9"
   resolved "https://registry.npmjs.org/@gluestack-ui/toast/-/toast-1.0.9.tgz"
