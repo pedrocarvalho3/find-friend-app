@@ -6,7 +6,7 @@ import { Image } from "../ui/image";
 import { VStack } from "../ui/vstack";
 import { Text } from "../ui/text";
 
-interface Pet {
+export interface Pet {
   id: string;
   name: string;
   description: string;

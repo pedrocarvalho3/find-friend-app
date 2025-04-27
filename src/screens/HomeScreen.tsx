@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { SafeAreaView } from "react-native";
 import { Center } from "../components/ui/center";
 import { Text } from "../components/ui/text";

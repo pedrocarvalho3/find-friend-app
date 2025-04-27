@@ -17,11 +17,11 @@ import PetFilter, {
   type PetSize,
 } from "../components/commons/PetFilter";
 import FilterBadge from "../components/commons/FilterBadge";
-import { useNavigation } from "expo-router";
+import { useRouter } from "expo-router";
 import { Center } from "../components/ui/center";
 import { Spinner } from "../components/ui/spinner";
 import EmptyList from "../components/commons/EmptyList";
-import PetCard from "../components/commons/PetCard";
+import PetCard, { type Pet } from "../components/commons/PetCard";
 import React from "react";
 
 const SearchPetsScreen: React.FC = React.memo(() => {
@@ -32,7 +32,7 @@ const SearchPetsScreen: React.FC = React.memo(() => {
   const [pets, setPets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const navigation = useNavigation();
+  const router = useRouter();
 
   const fetchPets = async (filters: Partial<FindAllParams> = {}) => {
     try {
@@ -139,8 +139,13 @@ const SearchPetsScreen: React.FC = React.memo(() => {
     setActiveFilters(newFilters);
   };
 
-  const navigateToPetDetails = (petId: string) => {
-    console.log(`Navegando para detalhes do pet ${petId}`);
+  const navigateToPetDetails = (pet: Pet) => {
+    console.log("param enviado:", JSON.stringify(pet));
+
+    router.push({
+      pathname: "/PetDetails",
+      params: { pet: JSON.stringify(pet) },
+    });
   };
 
   return (
