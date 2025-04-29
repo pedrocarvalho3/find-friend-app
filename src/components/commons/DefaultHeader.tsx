@@ -5,8 +5,24 @@ import LocationSetter from "./LocationSetter";
 import { Avatar, AvatarFallbackText, AvatarImage } from "../ui/avatar";
 import Logo from "@/src/assets/images/logo.png";
 import { Button } from "../ui/button";
+import { useState } from "react";
+import { useRouter } from "expo-router";
+import { isLoggedIn } from "@/src/utils/auth";
 
 const DefaultHeader = () => {
+  const router = useRouter();
+  const [isAuthenticated] = useState(false);
+
+  const handleAvatarPress = async () => {
+    const logged = await isLoggedIn();
+
+    if (logged) {
+      router.navigate("/OrgProfile");
+    } else {
+      router.navigate("/Login");
+    }
+  };
+
   return (
     <View className="flex-[0.15] bg-primary-500">
       <Box className="p-4 flex flex-row gap-8 justify-between">
@@ -14,7 +30,7 @@ const DefaultHeader = () => {
 
         <LocationSetter labelText="Localização:" />
 
-        <Button onPress={() => console.log("teste")}>
+        <Button onPress={handleAvatarPress}>
           <Avatar size="md">
             <AvatarFallbackText>Pedro</AvatarFallbackText>
             <AvatarImage
