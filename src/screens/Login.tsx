@@ -1,3 +1,4 @@
+import React from 'react';
 import { SafeAreaView } from "react-native";
 import { Text } from "../components/ui/text";
 import { Heading } from "../components/ui/heading";
@@ -12,35 +13,45 @@ import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react-native";
 import { Button, ButtonText } from "../components/ui/button";
 import { useRouter } from "expo-router";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller } from "react-hook-form";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
+import { useToast } from "../components/ui/toast";
+import ShowAppToast from "../components/commons/ShowToast";
+
+const loginSchema = z.object({
+  email: z.string().email("Email inválido!"),
+  password: z.string().min(8, 'A senha deve ter no minímo 8 caracteres!'),
+});
+
+type LoginSchema = z.infer<typeof loginSchema>;
 
 const Login = () => {
+  const toast = useToast()
+
+  const { handleSubmit, control, formState: { errors } } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+  });
+
   const router = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
 
   const handleRegisterPress = () => {
     router.navigate("/Register");
   };
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      setError("Por favor, preencha todos os campos");
-      return;
-    }
+  const handleLogin = async (data: LoginSchema) => {
+    const { email, password } = data;
 
     const apiUrl = Constants?.expoConfig?.extra?.API_URL;
-    console.log(apiUrl);
+    setIsLoading(true);
 
     try {
-      setIsLoading(true);
-      setError("");
-
       const response = await axios.post(`${apiUrl}/sessions`, {
         email,
         password,
@@ -49,24 +60,25 @@ const Login = () => {
       const { token } = response.data;
       await AsyncStorage.setItem("@app:token", token);
 
-      console.log("Login feito com sucesso");
-
+      ShowAppToast(toast, "success", "Login realizado com sucesso!");
       router.back();
     } catch (error) {
+      const defaultMessage = "Ocorreu um erro inesperado"
+
       if (axios.isAxiosError(error)) {
-        if (error.response) {
-          const errorMessage =
-            error.response.data.message || "Credenciais inválidas";
-          setError(errorMessage);
-        } else {
-          setError("Erro de conexão. Verifique sua internet.");
-        }
+        const status = error.response?.status
+
+        const toastMessage =
+          status === 400
+            ? "Credencias inválidas!"
+            : defaultMessage
+
+        ShowAppToast(toast, "error", toastMessage)
       } else {
-        setError("Ocorreu um erro ao fazer login");
+        ShowAppToast(toast, "error", defaultMessage)
       }
-      console.error("Login error:", error);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   };
 
@@ -78,36 +90,58 @@ const Login = () => {
         </Heading>
         <VStack space="xs" className="mt-4">
           <Text>Email</Text>
-          <Input>
-            <InputField
-              type="text"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </Input>
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+              <>
+                <Input isInvalid={!!error}>
+                  <InputField
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                  />
+                </Input>
+                {error && (
+                  <Text className="text-red-500 text-xs mt-1">{error.message}</Text>
+                )}
+              </>
+            )}
+          />
+
         </VStack>
         <VStack space="xs">
           <Text>Password</Text>
-          <Input>
-            <InputField
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={!showPassword}
-            />
-            <InputSlot className="pr-3" onPress={() => !setShowPassword}>
-              <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} />
-            </InputSlot>
-          </Input>
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+              <>
+                <Input isInvalid={!!error}>
+                  <InputField
+                    secureTextEntry={!showPassword}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                  />
+                  <InputSlot className="pr-3" onPress={() => setShowPassword((prev) => !prev)}>
+                    <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} />
+                  </InputSlot>
+                </Input>
+                {error && (
+                  <Text className="text-red-500 text-xs mt-1">{error.message}</Text>
+                )}
+              </>
+
+            )}
+          />
         </VStack>
 
-        {error ? <Text className="text-red-500 mt-2">{error}</Text> : null}
-
         <Button
-          onPress={handleLogin}
-          className="rounded-xl bg-blue-800 h-12 mt-8"
+          onPress={handleSubmit(handleLogin)}
+          className="rounded-xl bg-blue-800 h-12 mt-4"
           disabled={isLoading}
         >
           <ButtonText>{isLoading ? "Carregando..." : "Login"}</ButtonText>

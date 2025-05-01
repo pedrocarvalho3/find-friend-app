@@ -11,7 +11,6 @@ import { isLoggedIn } from "@/src/utils/auth";
 
 const DefaultHeader = () => {
   const router = useRouter();
-  const [isAuthenticated] = useState(false);
 
   const handleAvatarPress = async () => {
     const logged = await isLoggedIn();

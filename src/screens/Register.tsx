@@ -1,4 +1,4 @@
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 import { Text } from "../components/ui/text";
 import { Heading } from "../components/ui/heading";
 import { VStack } from "../components/ui/vstack";
@@ -22,37 +22,55 @@ const Register = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100 justify-center">
+    <ScrollView className="mt-8">
       <VStack space="xl" className="p-8">
         <Heading className="text-blue-900 font-bold text-5xl">
           Cadastre sua organização
         </Heading>
         <VStack space="xs" className="mt-4">
-          <Text className="">Nome do responsável</Text>
+          <Text>Nome do responsável</Text>
           <Input>
             <InputField type="text" />
           </Input>
         </VStack>
         <VStack space="xs">
-          <Text className="">Email</Text>
+          <Text>Email</Text>
           <Input>
             <InputField type="text" />
           </Input>
         </VStack>
         <VStack space="xs">
-          <Text className="">CEP</Text>
+          <Text>CEP</Text>
           <Input>
             <InputField type="text" />
           </Input>
         </VStack>
         <VStack space="xs">
-          <Text className="">Endereço</Text>
+          <Text>Cidade</Text>
           <Input>
             <InputField type="text" />
           </Input>
         </VStack>
         <VStack space="xs">
-          <Text className="">Whatsapp</Text>
+          <Text>Estado</Text>
+          <Input>
+            <InputField type="text" />
+          </Input>
+        </VStack>
+        <VStack space="xs">
+          <Text>Bairro</Text>
+          <Input>
+            <InputField type="text" />
+          </Input>
+        </VStack>
+        <VStack space="xs">
+          <Text>Rua</Text>
+          <Input>
+            <InputField type="text" />
+          </Input>
+        </VStack>
+        <VStack space="xs">
+          <Text>Whatsapp</Text>
           <Input>
             <InputField type="text" />
           </Input>
@@ -89,7 +107,8 @@ const Register = () => {
           <ButtonText className="text-blue-600">Já tenho uma conta</ButtonText>
         </Button>
       </VStack>
-    </SafeAreaView>
+    </ScrollView>
+
   );
 };
 
