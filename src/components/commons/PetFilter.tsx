@@ -25,30 +25,22 @@ import {
 import { VStack } from "../ui/vstack";
 import { HStack } from "../ui/hstack";
 import { ChevronDownIcon } from "../ui/icon";
-import { Input, InputField } from "../ui/input";
-
-export interface FindAllParams {
-  city: string;
-  age?: string;
-  size?: PetSize;
-  energy_level?: EnergyLevel;
-  environment?: Environment;
-}
-
-export type PetSize = "SMALL" | "MEDIUM" | "LARGE";
-export type EnergyLevel = "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE";
-export type Environment = "SMALL_SPACE" | "MEDIUM_SPACE" | "LARGE_SPACE";
+import type { DependencyLevel, EnergyLevel, Environment, FindAllPetsParams, PetAge, PetSize } from "@/src/types/pets";
+import { ageOptions, dependencyOptions, energyOptions, environmentOptions, sizeOptions } from "@/src/constants/petOptions";
 
 const PetFilter: React.FC<{
   isOpen: boolean;
   onClose: () => void;
   onApplyFilters: (filters: Omit<any, "city">) => void;
-  currentFilters: Partial<FindAllParams>;
+  currentFilters: Partial<FindAllPetsParams>;
 }> = ({ isOpen, onClose, onApplyFilters, currentFilters }) => {
-  const [age, setAge] = useState<string>(currentFilters.age || "");
+  const [age, setAge] = useState<PetAge | "">(currentFilters.age || "");
   const [size, setSize] = useState<PetSize | "">(currentFilters.size || "");
   const [energyLevel, setEnergyLevel] = useState<EnergyLevel | "">(
     currentFilters.energy_level || ""
+  );
+  const [dependencyLevel, setDependencyLevel] = useState<DependencyLevel | "">(
+    currentFilters.dependency_level || ""
   );
   const [environment, setEnvironment] = useState<Environment | "">(
     currentFilters.environment || ""
@@ -73,26 +65,6 @@ const PetFilter: React.FC<{
     setEnvironment("");
   };
 
-  const sizeOptions = [
-    { label: "Pequeno", value: "SMALL" },
-    { label: "Médio", value: "MEDIUM" },
-    { label: "Grande", value: "LARGE" },
-  ];
-
-  const energyOptions = [
-    { label: "Muito baixo", value: "ONE" },
-    { label: "Baixo", value: "TWO" },
-    { label: "Moderado", value: "THREE" },
-    { label: "Alto", value: "FOUR" },
-    { label: "Muito alto", value: "FIVE" },
-  ];
-
-  const environmentOptions = [
-    { label: "Espaço pequeno", value: "SMALL_SPACE" },
-    { label: "Espaço médio", value: "MEDIUM_SPACE" },
-    { label: "Espaço amplo", value: "LARGE_SPACE" },
-  ];
-
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose} snapPoints={[75]}>
       <ActionsheetBackdrop />
@@ -101,8 +73,8 @@ const PetFilter: React.FC<{
           <ActionsheetDragIndicator />
         </ActionsheetDragIndicatorWrapper>
 
-        <VStack space="4xl" className="p-6 w-full">
-          <HStack className="justify-between items-center mb-4">
+        <VStack space="xl" className="p-2 w-full">
+          <HStack className="justify-between items-center mb-1">
             <Text className="text-xl font-bold text-gray-800">Filtros</Text>
             <Button variant="link" onPress={handleClearFilters} className="p-0">
               <ButtonText className="text-primary-500 font-semibold">
@@ -113,16 +85,38 @@ const PetFilter: React.FC<{
 
           <ActionsheetScrollView showsVerticalScrollIndicator={false}>
             <VStack space="sm" className="mb-6">
-              <Text className="text-lg font-semibold text-gray-800">Idade</Text>
-              <Input
-                variant="underlined"
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
+              <Text className="text-lg font-semibold text-gray-800">
+                Idade
+              </Text>
+              <Select
+                selectedValue={age}
+                onValueChange={(value) => setAge(value as PetAge)}
               >
-                <InputField placeholder="Digite a idade" />
-              </Input>
+                <SelectTrigger className="bg-gray-100 rounded-lg">
+                  <SelectInput
+                    placeholder="Selecione o idade"
+                    className="p-4"
+                  />
+                  <SelectIcon>
+                    <ChevronDownIcon />
+                  </SelectIcon>
+                </SelectTrigger>
+                <SelectPortal>
+                  <SelectBackdrop />
+                  <SelectContent>
+                    <SelectDragIndicatorWrapper>
+                      <SelectDragIndicator />
+                    </SelectDragIndicatorWrapper>
+                    {ageOptions.map((option) => (
+                      <SelectItem
+                        key={option.value}
+                        label={option.label}
+                        value={option.value}
+                      />
+                    ))}
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
             </VStack>
 
             <VStack space="sm" className="mb-6">
@@ -184,6 +178,41 @@ const PetFilter: React.FC<{
                       <SelectDragIndicator />
                     </SelectDragIndicatorWrapper>
                     {energyOptions.map((option) => (
+                      <SelectItem
+                        key={option.value}
+                        label={option.label}
+                        value={option.value}
+                      />
+                    ))}
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
+            </VStack>
+
+            <VStack space="sm" className="mb-6">
+              <Text className="text-lg font-semibold text-gray-800">
+                Nível de Dependência
+              </Text>
+              <Select
+                selectedValue={dependencyLevel}
+                onValueChange={(value) => setDependencyLevel(value as DependencyLevel)}
+              >
+                <SelectTrigger className="bg-gray-100 rounded-lg">
+                  <SelectInput
+                    placeholder="Selecione o nível de energia"
+                    className="p-4"
+                  />
+                  <SelectIcon className="mr-2">
+                    <ChevronDownIcon />
+                  </SelectIcon>
+                </SelectTrigger>
+                <SelectPortal>
+                  <SelectBackdrop />
+                  <SelectContent>
+                    <SelectDragIndicatorWrapper>
+                      <SelectDragIndicator />
+                    </SelectDragIndicatorWrapper>
+                    {dependencyOptions.map((option) => (
                       <SelectItem
                         key={option.value}
                         label={option.label}

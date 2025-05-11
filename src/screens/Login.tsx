@@ -22,6 +22,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import { useToast } from "../components/ui/toast";
 import ShowAppToast from "../components/commons/ShowToast";
+import { FormControl, FormControlError, FormControlErrorText, FormControlLabel } from '../components/ui/form-control';
+import InputController from '../components/form/InputController';
 
 const loginSchema = z.object({
   email: z.string().email("Email inválido!"),
@@ -41,21 +43,12 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleRegisterPress = () => {
-    router.navigate("/Register");
-  };
-
   const handleLogin = async (data: LoginSchema) => {
-    const { email, password } = data;
-
     const apiUrl = Constants?.expoConfig?.extra?.API_URL;
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${apiUrl}/sessions`, {
-        email,
-        password,
-      });
+      const response = await axios.post(`${apiUrl}/sessions`, data);
 
       const { token } = response.data;
       await AsyncStorage.setItem("@app:token", token);
@@ -82,60 +75,32 @@ const Login = () => {
     }
   };
 
+  const handleRegisterPress = () => {
+    router.navigate("/Register");
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-gray-100 justify-center">
       <VStack space="xl" className="p-8">
         <Heading className="text-blue-900 font-bold text-5xl">
           Boas-vindas!
         </Heading>
-        <VStack space="xs" className="mt-4">
-          <Text>Email</Text>
-          <Controller
+        <VStack space="md" className="mt-4">
+          <InputController
             control={control}
             name="email"
-            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-              <>
-                <Input isInvalid={!!error}>
-                  <InputField
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                  />
-                </Input>
-                {error && (
-                  <Text className="text-red-500 text-xs mt-1">{error.message}</Text>
-                )}
-              </>
-            )}
+            label="Email"
+            keyboardType="email-address"
           />
 
-        </VStack>
-        <VStack space="xs">
-          <Text>Password</Text>
-          <Controller
+          <InputController
             control={control}
             name="password"
-            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-              <>
-                <Input isInvalid={!!error}>
-                  <InputField
-                    secureTextEntry={!showPassword}
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                  />
-                  <InputSlot className="pr-3" onPress={() => setShowPassword((prev) => !prev)}>
-                    <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} />
-                  </InputSlot>
-                </Input>
-                {error && (
-                  <Text className="text-red-500 text-xs mt-1">{error.message}</Text>
-                )}
-              </>
-
-            )}
+            label="Senha"
+            secureTextEntry
+            showToggle
+            showPassword={showPassword}
+            togglePassword={() => setShowPassword(prev => !prev)}
           />
         </VStack>
 

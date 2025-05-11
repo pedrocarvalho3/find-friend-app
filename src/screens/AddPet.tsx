@@ -26,39 +26,18 @@ import { ChevronDownIcon, ImageIcon, Plus } from "lucide-react-native";
 import { useState } from "react";
 import { Icon } from "../components/ui/icon";
 import { HStack } from "../components/ui/hstack";
-
-export type PetSize = "SMALL" | "MEDIUM" | "LARGE";
-export type EnergyLevel = "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE";
-export type Environment = "SMALL_SPACE" | "MEDIUM_SPACE" | "LARGE_SPACE";
+import type { DependencyLevel, EnergyLevel, Environment, PetAge, PetSize } from "../types/pets";
+import { ageOptions, dependencyOptions, energyOptions, environmentOptions, sizeOptions } from "../constants/petOptions";
 
 const AddPet = () => {
-  const [age, setAge] = useState<string>("");
+  const [age, setAge] = useState<PetAge | "">("");
   const [size, setSize] = useState<PetSize | "">("");
   const [energyLevel, setEnergyLevel] = useState<EnergyLevel | "">("");
+  const [dependencyLevel, setDependencyLevel] = useState<DependencyLevel | "">("");
   const [environment, setEnvironment] = useState<Environment | "">("");
 
-  const sizeOptions = [
-    { label: "Pequeno", value: "SMALL" },
-    { label: "Médio", value: "MEDIUM" },
-    { label: "Grande", value: "LARGE" },
-  ];
-
-  const energyOptions = [
-    { label: "Muito baixo", value: "ONE" },
-    { label: "Baixo", value: "TWO" },
-    { label: "Moderado", value: "THREE" },
-    { label: "Alto", value: "FOUR" },
-    { label: "Muito alto", value: "FIVE" },
-  ];
-
-  const environmentOptions = [
-    { label: "Espaço pequeno", value: "SMALL_SPACE" },
-    { label: "Espaço médio", value: "MEDIUM_SPACE" },
-    { label: "Espaço amplo", value: "LARGE_SPACE" },
-  ];
-
   return (
-    <ScrollView className="flex-1 bg-gray-200">
+    <ScrollView className="flex-1">
       <VStack space="xl" className="p-8 mt-12">
         <Heading className="text-blue-900 font-bold text-5xl">
           Adicione um pet
@@ -80,17 +59,40 @@ const AddPet = () => {
             <TextareaInput placeholder="Descreva sobre o pet..." />
           </Textarea>
         </VStack>
+
         <VStack space="sm">
-          <Text>Idade</Text>
-          <Input
-            variant="underlined"
-            size="md"
-            isDisabled={false}
-            isInvalid={false}
-            isReadOnly={false}
+          <Text>
+            Idade
+          </Text>
+          <Select
+            selectedValue={age}
+            onValueChange={(value) => setAge(value as PetAge)}
           >
-            <InputField placeholder="Digite a idade" />
-          </Input>
+            <SelectTrigger className="bg-gray-100 rounded-lg">
+              <SelectInput
+                placeholder="Selecione o idade"
+                className="p-4"
+              />
+              <SelectIcon>
+                <ChevronDownIcon />
+              </SelectIcon>
+            </SelectTrigger>
+            <SelectPortal>
+              <SelectBackdrop />
+              <SelectContent>
+                <SelectDragIndicatorWrapper>
+                  <SelectDragIndicator />
+                </SelectDragIndicatorWrapper>
+                {ageOptions.map((option) => (
+                  <SelectItem
+                    key={option.value}
+                    label={option.label}
+                    value={option.value}
+                  />
+                ))}
+              </SelectContent>
+            </SelectPortal>
+          </Select>
         </VStack>
 
         <VStack space="sm">
@@ -145,6 +147,41 @@ const AddPet = () => {
                   <SelectDragIndicator />
                 </SelectDragIndicatorWrapper>
                 {energyOptions.map((option) => (
+                  <SelectItem
+                    key={option.value}
+                    label={option.label}
+                    value={option.value}
+                  />
+                ))}
+              </SelectContent>
+            </SelectPortal>
+          </Select>
+        </VStack>
+
+        <VStack space="sm">
+          <Text>
+            Nível de Dependência
+          </Text>
+          <Select
+            selectedValue={dependencyLevel}
+            onValueChange={(value) => setDependencyLevel(value as DependencyLevel)}
+          >
+            <SelectTrigger className="bg-gray-100 rounded-lg">
+              <SelectInput
+                placeholder="Selecione o nível de energia"
+                className="p-4"
+              />
+              <SelectIcon className="mr-2">
+                <ChevronDownIcon />
+              </SelectIcon>
+            </SelectTrigger>
+            <SelectPortal>
+              <SelectBackdrop />
+              <SelectContent>
+                <SelectDragIndicatorWrapper>
+                  <SelectDragIndicator />
+                </SelectDragIndicatorWrapper>
+                {dependencyOptions.map((option) => (
                   <SelectItem
                     key={option.value}
                     label={option.label}

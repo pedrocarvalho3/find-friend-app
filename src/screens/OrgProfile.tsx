@@ -1,7 +1,6 @@
 import { SafeAreaView } from "react-native";
 import { Text } from "../components/ui/text";
 import { Button, ButtonIcon, ButtonText } from "../components/ui/button";
-import { Icon } from "../components/ui/icon";
 import { LogOut, Plus } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import { Box } from "../components/ui/box";

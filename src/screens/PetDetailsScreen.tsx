@@ -3,7 +3,6 @@ import MapView, { Marker } from "react-native-maps";
 import { Box } from "../components/ui/box";
 import { useState } from "react";
 import { Image } from "../components/ui/image";
-import type { Pet } from "../components/commons/PetCard";
 import { Text } from "../components/ui/text";
 import { HStack } from "../components/ui/hstack";
 import { Icon } from "../components/ui/icon";
@@ -16,14 +15,8 @@ import {
 } from "lucide-react-native";
 import { Avatar } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
-
-interface Organization {
-  id: string;
-  name: string;
-  address: string;
-  latitude: number;
-  longitude: number;
-}
+import type { Pet } from "../types/pets";
+import type { Org } from "../types/org";
 
 const PetDetailsScreen: React.FC = () => {
   const [pet] = useState<Pet>({
@@ -32,7 +25,7 @@ const PetDetailsScreen: React.FC = () => {
     description: "Um cachorro amigável e brincalhão",
     age: "Jovem",
     size: "MEDIUM",
-    energy_level: "FOUR",
+    energy_level: "VERY_HIGH",
     environment: "MEDIUM_SPACE",
     photos: [
       "https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
@@ -45,7 +38,7 @@ const PetDetailsScreen: React.FC = () => {
     is_available: true,
   });
 
-  const [organization] = useState<Organization>({
+  const [organization] = useState<Org>({
     id: "org1",
     name: "Amigos dos Animais",
     address: "Av. Paulista, 1000 - São Paulo, SP",
@@ -79,9 +72,8 @@ const PetDetailsScreen: React.FC = () => {
               >
                 <Image
                   source={{ uri: photo }}
-                  className={`w-20 h-20 rounded-md ${
-                    selectedPhoto === photo ? "border-2 border-cyan-700" : ""
-                  }`}
+                  className={`w-20 h-20 rounded-md ${selectedPhoto === photo ? "border-2 border-cyan-700" : ""
+                    }`}
                   alt={`Miniatura ${index + 1} do pet ${pet.name}`}
                 />
               </TouchableOpacity>

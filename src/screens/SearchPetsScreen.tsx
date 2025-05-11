@@ -10,23 +10,19 @@ import { Fab, FabIcon, FabLabel } from "../components/ui/fab";
 import { AddIcon } from "../components/ui/icon";
 import { useEffect, useState } from "react";
 import DefaultHeader from "../components/commons/DefaultHeader";
-import PetFilter, {
-  type EnergyLevel,
-  type Environment,
-  type FindAllParams,
-  type PetSize,
-} from "../components/commons/PetFilter";
 import FilterBadge from "../components/commons/FilterBadge";
 import { useRouter } from "expo-router";
 import { Center } from "../components/ui/center";
 import { Spinner } from "../components/ui/spinner";
 import EmptyList from "../components/commons/EmptyList";
-import PetCard, { type Pet } from "../components/commons/PetCard";
+import PetCard from "../components/commons/PetCard";
 import React from "react";
+import type { EnergyLevel, Environment, FindAllPetsParams, Pet, PetSize } from "../types/pets";
+import PetFilter from "../components/commons/PetFilter";
 
 const SearchPetsScreen: React.FC = React.memo(() => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<Partial<FindAllParams>>(
+  const [activeFilters, setActiveFilters] = useState<Partial<FindAllPetsParams>>(
     {}
   );
   const [pets, setPets] = useState<any[]>([]);
@@ -34,7 +30,7 @@ const SearchPetsScreen: React.FC = React.memo(() => {
 
   const router = useRouter();
 
-  const fetchPets = async (filters: Partial<FindAllParams> = {}) => {
+  const fetchPets = async (filters: Partial<FindAllPetsParams> = {}) => {
     try {
       setLoading(true);
 
@@ -111,11 +107,11 @@ const SearchPetsScreen: React.FC = React.memo(() => {
 
   const getEnergyLabel = (energy: EnergyLevel) => {
     const map = {
-      ONE: "Muito baixo",
-      TWO: "Baixo",
-      THREE: "Moderado",
-      FOUR: "Alto",
-      FIVE: "Muito alto",
+      VERY_LOW: "Muito baixo",
+      LOW: "Baixo",
+      MEDIUM: "Moderado",
+      HIGH: "Alto",
+      VERY_HIGH: "Muito alto",
     };
     return map[energy];
   };
@@ -129,11 +125,11 @@ const SearchPetsScreen: React.FC = React.memo(() => {
     return map[env];
   };
 
-  const handleApplyFilters = (filters: Partial<FindAllParams>) => {
+  const handleApplyFilters = (filters: Partial<FindAllPetsParams>) => {
     setActiveFilters(filters);
   };
 
-  const removeFilter = (filterKey: keyof FindAllParams) => {
+  const removeFilter = (filterKey: keyof FindAllPetsParams) => {
     const newFilters = { ...activeFilters };
     delete newFilters[filterKey];
     setActiveFilters(newFilters);

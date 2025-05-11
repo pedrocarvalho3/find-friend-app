@@ -2,7 +2,7 @@ import { Toast, ToastTitle, ToastDescription } from "../ui/toast";
 import { HStack } from "../ui/hstack";
 import { VStack } from "../ui/vstack";
 import { Icon } from "../ui/icon";
-import { AlertCircleIcon, CheckCircleIcon, HelpCircleIcon, InfoIcon, XCircleIcon } from "lucide-react-native";
+import { AlertCircleIcon, CheckCircleIcon, InfoIcon, XCircleIcon } from "lucide-react-native";
 
 type ToastType = "info" | "error" | "success" | "warning";
 

@@ -1,24 +1,10 @@
 import type React from "react";
-import type { EnergyLevel, Environment, PetSize } from "./PetFilter";
 import { Pressable } from "react-native";
 import { Box } from "../ui/box";
 import { Image } from "../ui/image";
 import { VStack } from "../ui/vstack";
 import { Text } from "../ui/text";
-
-export interface Pet {
-  id: string;
-  name: string;
-  description: string;
-  age: string;
-  size: PetSize;
-  energy_level: EnergyLevel;
-  environment: Environment;
-  photos: string[];
-  organization_id: string;
-  city: string;
-  is_available: boolean;
-}
+import type { Pet } from "@/src/types/pets";
 
 const PetCard: React.FC<{ pet: Pet; onPress: () => void }> = ({
   pet,
