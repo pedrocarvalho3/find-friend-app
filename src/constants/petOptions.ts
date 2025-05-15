@@ -11,19 +11,19 @@ export const sizeOptions = [
 ];
 
 export const energyOptions = [
-  { label: "Muito baixo", value: "VERY_LOW" },
-  { label: "Baixo", value: "LOW" },
-  { label: "Moderado", value: "MEDIUM" },
-  { label: "Alto", value: "HIGH" },
-  { label: "Muito alto", value: "VERY_HIGH" },
+  { label: "Muito baixa", value: "VERY_LOW" },
+  { label: "Baixa", value: "LOW" },
+  { label: "Moderada", value: "MEDIUM" },
+  { label: "Alta", value: "HIGH" },
+  { label: "Muito alta", value: "VERY_HIGH" },
 ];
 
 export const dependencyOptions = [
-  { label: "Muito baixo", value: "VERY_LOW" },
-  { label: "Baixo", value: "LOW" },
-  { label: "Moderado", value: "MEDIUM" },
-  { label: "Alto", value: "HIGH" },
-  { label: "Muito alto", value: "VERY_HIGH" },
+  { label: "Muito baixa", value: "VERY_LOW" },
+  { label: "Baixa", value: "LOW" },
+  { label: "Moderada", value: "MEDIUM" },
+  { label: "Alta", value: "HIGH" },
+  { label: "Muito alta", value: "VERY_HIGH" },
 ];
 
 export const environmentOptions = [

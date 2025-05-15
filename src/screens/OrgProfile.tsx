@@ -9,8 +9,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const OrgProfile = () => {
   const router = useRouter();
 
-  const handleRedirectAddPet = () => {
-    router.navigate("/AddPet");
+  const handleRedirectRegisterPet = () => {
+    router.navigate("/RegisterPet");
   };
 
   const handleLogout = async () => {
@@ -28,7 +28,7 @@ const OrgProfile = () => {
         <Text className="mb-8">Perfil da empresa</Text>
 
         <Button
-          onPress={handleRedirectAddPet}
+          onPress={handleRedirectRegisterPet}
           variant="link"
           className="bg-gray-200 rounded-xl h-12 items-center"
         >

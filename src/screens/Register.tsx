@@ -45,7 +45,7 @@ type RegisterSchema = z.infer<typeof registerSchema>
 const Register = () => {
   const toast = useToast()
 
-  const { handleSubmit, control, formState: { errors } } = useForm<RegisterSchema>({
+  const { handleSubmit, control } = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       latitude: 0,
